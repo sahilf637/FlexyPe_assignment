@@ -15,7 +15,8 @@ module.exports.validatePassword = async (
   savedPassword,
   salt,
 ) => {
-  return hashPassword(enteredPassword, salt) === savedPassword;
+  const hashedPassword = await this.hashPassword(enteredPassword, salt);
+  return hashedPassword === savedPassword;
 };
 
 module.exports.generateSignature = async (payload) => {
@@ -36,7 +37,7 @@ module.exports.validateSignature = async (req) => {
 
 module.exports.FormateData = (data) => {
   if (data) {
-    return { data };
+    return data;
   } else {
     throw new Error("Data Not found!");
   }
