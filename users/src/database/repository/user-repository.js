@@ -32,6 +32,9 @@ class UserRepository {
     try {
       const foundUser = await User.findOne({ email: email });
 
+      if (!foundUser) {
+        throw new BadRequestError("User not found");
+      }
       return foundUser;
     } catch (error) {
       throw new APIError(

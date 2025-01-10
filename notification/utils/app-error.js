@@ -26,6 +26,7 @@ class AppError extends Error {
   }
 }
 
+//api Specific Errors
 class APIError extends AppError {
   constructor(
     name,
@@ -37,6 +38,7 @@ class APIError extends AppError {
   }
 }
 
+//400
 class BadRequestError extends AppError {
   constructor(description = "Bad request", logingErrorResponse) {
     super(

@@ -1,7 +1,8 @@
 const userServices = require("./../services/user-service");
 const auth = require("./middleware/auth");
+const { PublishMessage } = require("./../utils/index");
 
-module.exports = async (app) => {
+module.exports = async (app, channel) => {
   const service = new userServices();
 
   const sendTokenInCookie = (res, token) => {
@@ -84,11 +85,38 @@ module.exports = async (app) => {
 
   app.post("/api/submit", async (req, res, next) => {
     try {
+      const rejectionReasons = [
+        "Invalid request format",
+        "Missing required fields",
+        "Unauthorized access",
+        "Exceeded maximum payload size",
+        "Unsupported media type",
+        "Duplicate submission",
+        "Validation error in input data",
+        "Resource not found",
+        "Rate limit exceeded",
+        "Server is currently unavailable",
+      ];
+
       const probability = Math.random() * 100;
       if (probability < 50) {
-        //code for queue
+        const randomIndex = Math.floor(Math.random() * rejectionReasons.length);
+        const rejectionReason = rejectionReasons[randomIndex];
+
+        const ip = req.ip || req.connection.remoteAddress;
+        const time = new Date().toISOString();
+
+        const message = {
+          ip,
+          time,
+          reason: rejectionReason,
+        };
+
+        PublishMessage(channel, "rejection", JSON.stringify(message));
+
         res.status(400).json({
-          message: "denied",
+          message: "Submission rejected",
+          reason: rejectionReason,
         });
       } else {
         res.status(200).json({
