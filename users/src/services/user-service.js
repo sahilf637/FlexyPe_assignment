@@ -25,7 +25,6 @@ class UserServices {
           existingUser.salt,
         );
         if (validedPassword) {
-          console.log("bb");
           const token = await generateSignature({
             email: existingUser.email,
             _id: existingUser._id,
@@ -62,6 +61,7 @@ class UserServices {
       });
       return FormateData({ id: existingUser._id, token });
     } catch (error) {
+      console.log(error)
       throw new APIError("Can't create user", error);
     }
   }

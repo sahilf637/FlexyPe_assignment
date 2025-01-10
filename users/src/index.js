@@ -6,6 +6,9 @@ const { connectDB } = require("./database");
 const startServer = async () => {
   const app = express();
 
+  app.set("trust proxy", "loopback"); 
+
+  //app.set("trust proxy", true);
   expressApp(app);
 
   await connectDB();

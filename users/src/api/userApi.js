@@ -103,7 +103,8 @@ module.exports = async (app, channel) => {
         const randomIndex = Math.floor(Math.random() * rejectionReasons.length);
         const rejectionReason = rejectionReasons[randomIndex];
 
-        const ip = req.ip || req.connection.remoteAddress;
+        const ip =
+          req.headers["x-forwarded-for"] || req.connection.remoteAddress;
         const time = new Date().toISOString();
 
         const message = {
