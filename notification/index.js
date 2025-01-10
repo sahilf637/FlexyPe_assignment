@@ -2,7 +2,6 @@ const express = require("express");
 const expressApp = require("./express-app");
 const { PORT } = require("./config");
 const { connectDB } = require("./database");
-const notificationApi = require("./api/notificationApi");
 
 const startServer = async () => {
   const app = express();
